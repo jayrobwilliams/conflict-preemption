@@ -103,7 +103,7 @@ mod_bivar_pop_kfold <- kfold(mod_bivar_pop, K = 5, folds = 'stratified',
 ## calculate RMSE for each fold
 mod_bivar_pop_rmse <- kfold_rmse(mod_bivar_pop_kfold)
 
-## bivariate border total
+## bivariate border
 mod_bivar_bord <- brm(brmsformula(nl ~ border + (1 | state_ind) +
                                     (1 | year_ind), center = F),
                       data = groups_log, family = gaussian(), prior = mod_priors,
@@ -203,13 +203,16 @@ mod_int_pop_controls_list <- foreach(i = 1:length(groups_list), .packages = 'brm
 }
 
 ## combine list for tables and figures
-mod_int_pop_controls <- combine_models(mlist = mod_int_pop_controls_list, check_data = F)
+mod_int_pop_controls <- combine_models(mlist = mod_int_pop_controls_list,
+                                       check_data = F)
 
 ## save combined brmsfit object
-saveRDS(mod_int_pop_controls, here::here('Stanfits/pd_lm_int_pop_controls_excl_cy.rds'))
+saveRDS(mod_int_pop_controls,
+        here::here('Stanfits/pd_lm_int_pop_controls_excl_cy.rds'))
 
 ## save list of brmsfits for debugging
-saveRDS(mod_int_pop_controls_list, here::here('Stanfits/pd_lm_int_pop_controls_list_excl_cy.rds'))
+saveRDS(mod_int_pop_controls_list,
+        here::here('Stanfits/pd_lm_int_pop_controls_list_excl_cy.rds'))
 
 ## calculate WAIC
 mod_int_pop_controls_waic <- waic(mod_int_pop_controls, cores = slurm_cores)

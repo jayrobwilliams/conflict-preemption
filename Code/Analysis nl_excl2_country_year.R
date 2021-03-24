@@ -207,10 +207,12 @@ mod_int_pop_controls_list <- foreach(i = 1:length(groups_list), .packages = 'brm
 mod_int_pop_controls <- combine_models(mlist = mod_int_pop_controls_list, check_data = F)
 
 ## save combined brmsfit object
-saveRDS(mod_int_pop_controls, here::here('Stanfits/pd_lm_int_pop_controls_excl2_cy.rds'))
+saveRDS(mod_int_pop_controls,
+        here::here('Stanfits/pd_lm_int_pop_controls_excl2_cy.rds'))
 
 ## save list of brmsfits for debugging
-saveRDS(mod_int_pop_controls_list, here::here('Stanfits/pd_lm_int_pop_controls_list_excl2_cy.rds'))
+saveRDS(mod_int_pop_controls_list,
+        here::here('Stanfits/pd_lm_int_pop_controls_list_excl2_cy.rds'))
 
 ## calculate WAIC
 mod_int_pop_controls_waic <- waic(mod_int_pop_controls, cores = slurm_cores)
@@ -244,10 +246,12 @@ mod_int_bord_controls_list <- foreach(i = 1:length(groups_list), .packages = 'br
 mod_int_bord_controls <- combine_models(mlist = mod_int_bord_controls_list, check_data = F)
 
 ## save combined brmsfit object
-saveRDS(mod_int_bord_controls, here::here('Stanfits/pd_lm_int_bord_controls_excl2_cy.rds'))
+saveRDS(mod_int_bord_controls,
+        here::here('Stanfits/pd_lm_int_bord_controls_excl2_cy.rds'))
 
 ## save list of brmsfits for debugging
-saveRDS(mod_int_bord_controls_list, here::here('Stanfits/pd_lm_int_bord_controls_list_excl2_cy.rds'))
+saveRDS(mod_int_bord_controls_list,
+        here::here('Stanfits/pd_lm_int_bord_controls_list_excl2_cy.rds'))
 
 ## calculate WAIC
 mod_int_bord_controls_waic <- waic(mod_int_bord_controls, cores = slurm_cores)
