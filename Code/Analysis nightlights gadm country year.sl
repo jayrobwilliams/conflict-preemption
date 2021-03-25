@@ -12,10 +12,10 @@
 #SBATCH --cpus-per-task=4
 
 # memory request
-#SBATCH --mem=4gb
+#SBATCH --mem=8gb
 
-# eleven day time limit
-#SBATCH --time=1-0
+# six hour time limit
+#SBATCH --time=2-0
 
 # write outputs to directory to avoid cluttering top level directory
 #SBATCH -o logs/nl-gadm-cy-%j.out # Standard output

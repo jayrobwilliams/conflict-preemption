@@ -14,7 +14,7 @@ print(paste('Nightlights GADM Analysis Started', Sys.time()))
 ## load packages
 library(tidyverse)
 library(brms)
-library(RWmisc)
+library(BayesPostEst)
 library(future)
 plan(multicore(workers = max(4, as.numeric(Sys.getenv('SLURM_CPUS_PER_TASK')),
                              na.rm = T)))
@@ -29,10 +29,10 @@ gadm <- gadm %>% mutate(state_ind = as.numeric(as.factor(gwid)),
 
 ## create logged and lagged variables for models
 gadm_log <- gadm %>%
-  mutate_at(vars(nl, cap_dist), log) %>%
+  mutate_at(vars(nl, cap_dist, area), log) %>%
   mutate(pop_tot = log1p(pop_tot)) %>% 
   group_by(id) %>% 
-  mutate_at(vars(pop_tot, cap_dist), ~lag(., order_by = year)) %>% 
+  mutate_at(vars(pop_tot, border, cap_dist, area), ~lag(., order_by = year)) %>% 
   filter(year >= 1992, !is.na(pop_tot)) %>% # drop NAs from lagging
   data.frame()
 
