@@ -13,14 +13,9 @@ print(paste('Nightlights Analysis Using Population Gini Started', Sys.time()))
 
 ## load packages
 library(tidyverse)
-library(vdem)
-library(WDI)
-library(countrycode)
 library(mice)
 library(brms)
 library(loo)
-library(xtable)
-library(RWmisc)
 library(BayesPostEst)
 library(future)
 plan(multicore(workers = max(4, as.numeric(Sys.getenv('SLURM_CPUS_PER_TASK')),
@@ -84,7 +79,7 @@ mod_stanvars <- stanvar(scode = '  real mu_beta; // mean of regression coefficie
 
 ## bivariate population gini model ####
 
-## bivariate gini total
+## bivariate gini
 mod_bivar_gini <- brm(brmsformula(nl ~ pop_gini + (1 | state_ind) +
                                     (1 | year_ind), center = F),
                       data = groups_log, family = gaussian(), prior = mod_priors,
@@ -96,7 +91,7 @@ mod_bivar_gini <- brm(brmsformula(nl ~ pop_gini + (1 | state_ind) +
 ## calculate WAIC
 mod_bivar_gini_waic <- waic(mod_bivar_gini, cores = slurm_cores)
 
-## calculate k fold crossvalidation information criterion
+## calculate k fold crossvalidation
 mod_bivar_gini_kfold <- kfold(mod_bivar_gini, K = 5, folds = 'stratified',
                               group = 'state_ind', chains = 4, iter = 2000,
                               seed = 1234, save_fits = T)
@@ -121,7 +116,7 @@ mod_int <- brm(brmsformula(nl ~ cap_dist + pop_gini + cap_dist:pop_gini + area +
 ## calculate WAIC
 mod_int_waic <- waic(mod_int, cores = slurm_cores)
 
-## calculate k fold crossvalidation information criterion
+## calculate k fold crossvalidation
 mod_int_kfold <- kfold(mod_int, K = 5, folds = 'stratified',
                        group = 'state_ind', chains = 4, iter = 2000,
                        seed = 1234, save_fits = T)
@@ -171,7 +166,8 @@ mod_int_controls <- combine_models(mlist = mod_int_controls_list, check_data = F
 saveRDS(mod_int_controls, here::here('Stanfits/pd_lm_gini_int_controls_cy.rds'))
 
 ## save list of brmsfits for debugging
-saveRDS(mod_int_controls_list, here::here('Stanfits/pd_lm_gini_int_controls_list_cy.rds'))
+saveRDS(mod_int_controls_list,
+        here::here('Stanfits/pd_lm_gini_int_controls_list_cy.rds'))
 
 ## calculate WAIC
 mod_int_controls_waic <- waic(mod_int_controls, cores = slurm_cores)
@@ -179,9 +175,9 @@ mod_int_controls_waic <- waic(mod_int_controls, cores = slurm_cores)
 ## calculate RMSE for each fold for each imputed dataset
 mod_int_controls_rmse <- foreach(i = mod_int_controls_list, .packages = 'brms') %dopar% {
   
-  kf <- brms::kfold(i, K = 5, folds = 'stratified',
-                    group = 'state_ind', chains = 4, iter = 2000,
-                    seed = 1234, save_fits = T)
+  kf <- kfold(i, K = 5, folds = 'stratified',
+              group = 'state_ind', chains = 4, iter = 2000,
+              seed = 1234, save_fits = T)
   kfold_rmse(kf)
   
 }
@@ -226,7 +222,8 @@ close(fileConn)
 ## get marginal effects for interactive models
 margs_interactive <- mcmcMargEff(mod_int, 'b_pop_gini', 'b_cap_dist:pop_gini',
                                  groups_log$cap_dist, plot = F)
-margs_controls <- mcmcMargEff(mod_int_controls, 'b_pop_gini', 'b_cap_dist:pop_gini',
+margs_controls <- mcmcMargEff(mod_int_controls, 'b_pop_gini',
+                              'b_cap_dist:pop_gini',
                               groups_log$cap_dist, plot = F)
 margs_gg <- rbind(data.frame(margs_interactive, model = 1),
                   data.frame(margs_controls, model = 2))
