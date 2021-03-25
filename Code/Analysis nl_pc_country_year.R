@@ -98,7 +98,7 @@ mod_bivar_dist_waic <- waic(mod_bivar_dist, cores = slurm_cores)
 ## calculate k fold crossvalidation information criterion
 mod_bivar_dist_kfold <- kfold(mod_bivar_dist, K = 5, folds = 'stratified',
                               group = 'state_ind', chains = 4, iter = 2000,
-                              save_fits = T)
+                              seed = 1234, save_fits = T)
 
 ## calculate RMSE for each fold
 mod_bivar_dist_rmse <- kfold_rmse(mod_bivar_dist_kfold)
@@ -137,13 +137,16 @@ mod_bivar_dist_controls_list <- foreach(i = 1:length(groups_list), .packages = '
 }
 
 ## combine list for tables and figures
-mod_bivar_dist_controls <- combine_models(mlist = mod_bivar_dist_controls_list, check_data = F)
+mod_bivar_dist_controls <- combine_models(mlist = mod_bivar_dist_controls_list,
+                                          check_data = F)
 
 ## save combined brmsfit object
-saveRDS(mod_bivar_dist_controls, here::here('Stanfits/pd_lm_nlpc_controls_cy.rds'))
+saveRDS(mod_bivar_dist_controls,
+        here::here('Stanfits/pd_lm_nlpc_controls_cy.rds'))
 
 ## save list of brmsfits for debugging
-saveRDS(mod_bivar_dist_controls_list, here::here('Stanfits/pd_lm_nlpc_controls_list_cy.rds'))
+saveRDS(mod_bivar_dist_controls_list,
+        here::here('Stanfits/pd_lm_nlpc_controls_list_cy.rds'))
 
 ## calculate WAIC
 mod_bivar_dist_controls_waic <- waic(mod_bivar_dist_controls, cores = slurm_cores)
@@ -151,9 +154,9 @@ mod_bivar_dist_controls_waic <- waic(mod_bivar_dist_controls, cores = slurm_core
 ## calculate RMSE for each fold for each imputed dataset
 mod_bivar_dist_controls_rmse <- foreach(i = mod_bivar_dist_controls_list, .packages = 'brms') %dopar% {
   
-  kf <- brms::kfold(i, K = 5, folds = 'stratified',
-                    group = 'state_ind', chains = 4, iter = 2000,
-                    save_fits = T)
+  kf <- kfold(i, K = 5, folds = 'stratified',
+              group = 'state_ind', chains = 4, iter = 2000,
+              save_fits = T)
   kfold_rmse(kf)
   
 }
