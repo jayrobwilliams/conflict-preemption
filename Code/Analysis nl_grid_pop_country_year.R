@@ -14,7 +14,7 @@ print(paste('Nightlights Population Grid Analysis Started', Sys.time()))
 ## load packages
 library(tidyverse)
 library(brms)
-library(RWmisc)
+library(BayesPostEst)
 library(future)
 plan(multicore(workers = max(4, as.numeric(Sys.getenv('SLURM_CPUS_PER_TASK')),
                              na.rm = T)))
@@ -30,10 +30,10 @@ grid <- grid %>% mutate(state_ind = as.numeric(as.factor(gwid)),
 
 ## create logged and lagged variables for models
 grid_log <- grid %>%
-  mutate_at(vars(nl, cap_dist), log) %>%
+  mutate_at(vars(nl, cap_dist, area), log) %>%
   mutate(pop_tot = log1p(pop)) %>% 
   group_by(id) %>% 
-  mutate_at(vars(pop_tot, cap_dist), ~lag(., order_by = year)) %>% 
+  mutate_at(vars(pop_tot, cap_dist, area), ~lag(., order_by = year)) %>% 
   filter(year >= 1992, !is.na(pop_tot)) %>% # drop NAs from lagging
   data.frame()
 
@@ -61,18 +61,21 @@ mod_int_pop <- brm(brmsformula(nl ~ cap_dist + pop_tot + cap_dist:pop_tot +
                                  area + (1 | state_ind) + (1 | year_ind),
                                center = F),
                    data = grid_log, family = gaussian(), prior = mod_priors,
-                   stanvars = mod_stanvars,
-                   iter = 4000, chains = 4, save_dso = T,
-                   control = list(adapt_delta = .95), seed = 1234,
-                   future = T, file = here::here('Stanfits/pd_lm_int_pop_grid_cy'))
+                   stanvars = mod_stanvars, iter = 4000, chains = 4,
+                   save_dso = T, control = list(adapt_delta = .95),
+                   seed = 1234, future = T,
+                   file = here::here('Stanfits/pd_lm_int_pop_grid_cy'))
 
 
 
 ## marginal effects plots ####
 
 ## get marginal effects for interactive models
-margs_interactive_pop_grid <- mcmcMargEff(mod_int_pop, 'b_pop_tot', 'b_cap_dist:pop_tot',
-                                          grid_log$cap_dist, plot = F)
+margs_interactive_pop_grid <- mcmcMargEff(mod_int_pop, 'b_pop_tot',
+                                          'b_cap_dist:pop_tot',
+                                          scale(grid_log$cap_dist,
+                                                center = T, scale = F),
+                                          plot = F)
 
 ## write marginal effects plot dataframe to disk
 save(margs_interactive_pop_grid, file = here::here('Figure Data/marg_eff_pop_df_grid_cy.RData'))
