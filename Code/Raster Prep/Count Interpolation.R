@@ -100,14 +100,14 @@ pop_observed <- c(1990, 1995, 2000, 2005, 2010, 2015)
 pop_predict <- seq(1990, 2015, by = 1)
 
 ## create output directory for interpolated rasters
-dir.create(here::here('Datasets/Population/Count Interpolated'),
+dir.create(here::here('Datasets/Population/Interpolated'),
            showWarnings = F)
 
 ## linear temporal interpolation of population -- create from scratch
 population <- interpolateTemporal(population, xin = pop_observed,
                                   xout = pop_predict,
                                   outdir = here::here('Datasets/Population',
-                                                      'Count Interpolated'),
+                                                      'Interpolated'),
                                   prefix = 'pop_cnt', writechange = F,
                                   returnstack = T, overwrite = T)
 

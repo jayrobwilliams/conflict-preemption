@@ -38,7 +38,7 @@ GeoEPR <- st_read(here::here('Datasets/EPR'), 'GeoEPR-2014 Cleaned')
 
 ## read in population rasters
 population_cnt <- stack(list.files(here::here('Datasets/Population',
-                                              'Count Interpolated'),
+                                              'Interpolated'),
                                     '.tif', full.names = T))
 
 

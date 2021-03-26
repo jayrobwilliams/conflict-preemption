@@ -51,7 +51,7 @@ cshapes <- st_read(here::here('Datasets/cshapes/cshapes_0.6'), 'cshapes')
 
 ## read in population rasters
 population_cnt <- stack(here::here(list.files('Datasets/Population',
-                                              'Count Interpolated'),
+                                              'Interpolated'),
                                     '.tif', full.names = T))
 
 ## read in nightlights rasters
@@ -161,12 +161,14 @@ for(i in 1:length(years)) {
     cell <- projectUTM(cell)
     capital <- st_transform(capital, st_crs(cell))
     
-    ## calculate distance from territory centroid to capital in km
-    cap_dist <- as.numeric(st_distance(st_centroid(cell), capital) / 1e3)
+    ## calculate area of group cell
+    area_cell <- units::drop_units(units::set_units(st_area(cell), 'km^2'))
     
-    ## calculate area of cell in km^2
-    area_cell <- as.numeric(st_area(cell) / 1e6)
+    ## calculate distance from cell centroid to capital in km
+    cap_dist <- units::drop_units(units::set_units(st_distance(st_centroid(cell),
+                                                               capital), 'km'))
     
+    ## combine
     c(cell$id, cell$GWCODE, years[i], pop_cell_tot, nl_cell_tot, cap_dist,
       cell$border, area_cell)
     

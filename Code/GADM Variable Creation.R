@@ -26,13 +26,11 @@ setwd("~/Dropbox/UNC/Dissertation/Onset")
 
 ## load packages
 library(sf) # new unified spatial package
-library(sp) # basic spatial data handling
 library(raster) # pixel based data
 library(rgdal) # spatial data I/O
 library(rgeos) # spatial topology operations
 library(dplyr)
 library(tidyr)
-library(spdplyr)
 library(stringr)
 library(data.table)
 
@@ -55,12 +53,12 @@ GADM <- st_read(dsn = here::here('Datasets/gadm/gadm34_levels.gpkg'),
 
 ## read in population rasters
 population_cnt <- stack(list.files(here::here('Datasets/Population',
-                                              'Count Interpolated'),
+                                              'Interpolated'),
                                     '.tif', full.names = T))
 
 ## read in nightlights rasters
-nightlights <- stack(list.files(here::here('Datasets/Nightlights/Output'), '.tif',
-                                full.names = T))
+nightlights <- stack(list.files(here::here('Datasets/Nightlights/Output'),
+                                '.tif', full.names = T))
 
 
 
@@ -152,10 +150,11 @@ gadm_data <- foreach(i = 1:nrow(GADM_df), # replace w/ nrow(GeoEPR_df) after fig
   border <- !st_within(terr, st_buffer(state_poly, -1e3), sparse = F)[[1]]
   
   ## calculate area of group territory
-  area_terr <- st_area(terr)[[1]] / 1e6
+  area_terr <- units::drop_units(units::set_units(st_area(terr), 'km^2'))
   
   ## calculate distance from territory centroid to capital in km
-  cap_dist <- st_distance(st_centroid(terr), capital)[[1]] / 1e3
+  cap_dist <- units::drop_units(units::set_units(st_distance(st_centroid(terr),
+                                                             capital), 'km'))
   
   ## return all measures for concatenation by foreach
   data.frame(id = adm$GID_1, COWcode = state_poly$COWCODE,
@@ -165,17 +164,16 @@ gadm_data <- foreach(i = 1:nrow(GADM_df), # replace w/ nrow(GeoEPR_df) after fig
   
 }
 
-
 ## save group data
 saveRDS(gadm_data, here::here('Input Data/gadm data.RDS'))
+
+
 
 ## print script to verify successful execution in log
 print(paste('GADM Variable Creation Completed', Sys.time()))
 
 ## quit R
 quit(save = 'no')
-
-
 
 ###################
 ## End of Script ##
