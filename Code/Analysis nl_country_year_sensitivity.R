@@ -13,9 +13,6 @@ print(paste('Nightlights Sensitivity Analysis Started', Sys.time()))
 
 ## load packages
 library(tidyverse)
-library(vdem)
-library(WDI)
-library(countrycode)
 library(mice)
 library(brms)
 library(loo)
@@ -98,7 +95,8 @@ mod_int_pop_lo_controls_list <- foreach(i = 1:length(groups_list), .packages = '
 }
 
 ## combine list for tables and figures
-mod_int_pop_lo_controls <- combine_models(mlist = mod_int_pop_lo_controls_list, check_data = F)
+mod_int_pop_lo_controls <- combine_models(mlist = mod_int_pop_lo_controls_list,
+                                          check_data = F)
 
 ## full controls border model
 mod_int_bord_lo_controls_list <- foreach(i = 1:length(groups_list), .packages = 'brms') %dopar% {
@@ -116,7 +114,8 @@ mod_int_bord_lo_controls_list <- foreach(i = 1:length(groups_list), .packages = 
 }
 
 ## combine list for tables and figures
-mod_int_bord_lo_controls <- combine_models(mlist = mod_int_bord_lo_controls_list, check_data = F)
+mod_int_bord_lo_controls <- combine_models(mlist = mod_int_bord_lo_controls_list,
+                                           check_data = F)
 
 
 
@@ -146,7 +145,8 @@ mod_int_pop_hi_controls_list <- foreach(i = 1:length(groups_list), .packages = '
 }
 
 ## combine list for tables and figures
-mod_int_pop_hi_controls <- combine_models(mlist = mod_int_pop_hi_controls_list, check_data = F)
+mod_int_pop_hi_controls <- combine_models(mlist = mod_int_pop_hi_controls_list,
+                                          check_data = F)
 
 ## full controls population model
 mod_int_bord_hi_controls_list <- foreach(i = 1:length(groups_list), .packages = 'brms') %dopar% {
@@ -164,26 +164,31 @@ mod_int_bord_hi_controls_list <- foreach(i = 1:length(groups_list), .packages = 
 }
 
 ## combine list for tables and figures
-mod_int_bord_hi_controls <- combine_models(mlist = mod_int_bord_hi_controls_list, check_data = F)
+mod_int_bord_hi_controls <- combine_models(mlist = mod_int_bord_hi_controls_list,
+                                           check_data = F)
 
 
 
 
 ## get marginal effects for low prior population model
-margs_controls_pop_lo <- mcmcMargEff(mod_int_pop_lo_controls, 'b_pop_tot', 'b_cap_dist:pop_tot',
-                                     scale(groups_log$cap_dist), plot = F)
+margs_controls_pop_lo <- mcmcMargEff(mod_int_pop_lo_controls, 'b_pop_tot',
+                                     'b_cap_dist:pop_tot',
+                                     groups_log$cap_dist, plot = F)
 
 ## get marginal effects for low prior border model
-margs_controls_bord_lo <- mcmcMargEff(mod_int_bord_lo_controls, 'b_borderTRUE', 'b_cap_dist:borderTRUE',
-                                      scale(groups_log$cap_dist), plot = F)
+margs_controls_bord_lo <- mcmcMargEff(mod_int_bord_lo_controls, 'b_borderTRUE',
+                                      'b_cap_dist:borderTRUE',
+                                      groups_log$cap_dist, plot = F)
 
 ## get marginal effects for high prior population model
-margs_controls_pop_hi <- mcmcMargEff(mod_int_pop_hi_controls, 'b_pop_tot', 'b_cap_dist:pop_tot',
-                                     scale(groups_log$cap_dist), plot = F)
+margs_controls_pop_hi <- mcmcMargEff(mod_int_pop_hi_controls, 'b_pop_tot',
+                                     'b_cap_dist:pop_tot',
+                                     groups_log$cap_dist, plot = F)
 
 ## get marginal effects for high prior border model
-margs_controls_bord_hi <- mcmcMargEff(mod_int_bord_hi_controls, 'b_borderTRUE', 'b_cap_dist:borderTRUE',
-                                      scale(groups_log$cap_dist), plot = F)
+margs_controls_bord_hi <- mcmcMargEff(mod_int_bord_hi_controls, 'b_borderTRUE',
+                                      'b_cap_dist:borderTRUE',
+                                      groups_log$cap_dist, plot = F)
 
 
 ## combine marginal effects from narrow and wide prior population models
