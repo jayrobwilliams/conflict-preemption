@@ -1,11 +1,4 @@
-############################
-## author: Rob Williams   ##
-## project: dissertation  ##
-## created: March 8, 2020 ##
-## updated: March 8, 2020 ##
-############################
-
-## this script prepares the data used in analyses
+## this script prepares the data used in the main analyses
 
 ## print script to identify in log
 print(paste('Nightlights Data Prep Started', Sys.time()))
@@ -198,6 +191,8 @@ print.xtable(xtable(miss_vars, align = c('l', 'l'),
              sanitize.colnames.function = function(x) x,
              file = here::here('Tables/pd_lm_missing.tex'),
              table.placement = 'h!')
+
+
 
 ## print script to verify successful execution in log
 print(paste('Nightlights Data Prep Completed', Sys.time()))

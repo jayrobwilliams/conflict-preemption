@@ -1,12 +1,6 @@
-###############################
-## author: Rob Williams      ##
-## project: dissertation     ##
-## created: February 4, 2018 ##
-## updated: June 9, 2019     ##
-###############################
-
 ## this script executes panel data bayesian linear regressions models of
 ## nightlights in ethnic group territories with country and year random effects
+## using population gini
 
 ## print script to identify in log
 print(paste('Nightlights Analysis Using Population Gini Started', Sys.time()))

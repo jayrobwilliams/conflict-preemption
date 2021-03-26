@@ -1,10 +1,3 @@
-################################
-## author: Rob Williams       ##
-## project: dissertation      ##
-## created: January 16, 2018  ##
-## updated: January 16, 2018  ##
-################################
-
 ## this script clips off a few problematic sub-polygons from ethnic group
 ## polygons that straddle the antimeridian and throw things off by stretching
 ## across the entire 360 degrees of longitude
@@ -17,7 +10,6 @@ library(sp) # basic spatial data handling
 library(rgdal) # spatial data I/O
 library(rgeos) # spatial topology operations
 library(dplyr)
-library(spdplyr)
 
 ## data temporal range
 data_start <- 1946
@@ -237,13 +229,13 @@ GeoEPR_temp <- GeoEPR_temp[order(GeoEPR_temp$gwgroupid), ]
 writeOGR(GeoEPR_temp, here::here('Datasets/EPR'), 'GeoEPR-2014 Cleaned',
          driver = 'ESRI Shapefile', overwrite_layer = T)
 
+
+
 ## print script to verify successful execution in log
 print(paste('GeoEPR Cleaning Completed', Sys.time()))
 
 ## quit R
 quit(save = 'no')
-
-
 
 ###################
 ## End of Script ##

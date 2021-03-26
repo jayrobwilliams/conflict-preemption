@@ -1,11 +1,5 @@
-###############################
-## author: Rob Williams      ##
-## project: dissertation     ##
-## created: October 10, 2019 ##
-## updated: October 10, 2019 ##
-###############################
-
-## this script executes 
+## this script generates figures for substantive results in the paper and
+## supplemental information
 
 ## load packages
 library(tidyverse)
@@ -26,7 +20,7 @@ groups_log <- groups %>% select(nl, pop_tot, cap_dist, area, gdp) %>%
   filter(year >= 1992, !is.na(pop_tot)) %>% # drop NAs from lagging
   data.frame()
 
-##
+## labeller for descriptive statistics
 desc_labs <- as_labeller(c('nl' = 'ln Nightlights',
                            'pop_tot' = 'ln Population',
                            'border' = 'Border',
@@ -55,6 +49,7 @@ groups %>% mutate(excluded = as.numeric(status) <= 4,
   theme_rw()
 dev.off()
 
+## overall descriptive statistics
 pdf(here::here('Figures/descriptives.pdf'), width = 8, height = 5)
 groups_log %>% select(nl, cap_dist, pop_tot, border, area, excluded,
                       dom_overlap, family_downgraded_regaut5, oil, gdp,
@@ -103,6 +98,67 @@ margs_gg_bord %>%
                                                '2' = 'Model 6'))) +
   theme_rw()
 dev.off()
+
+
+
+## placebo plots ####
+
+## load marginal effects dataframes for main, GADM, and grid population models
+load(here::here('Figure Data/marg_eff_pop_cent_df_cy.RData'))
+margs_interactive_pop_cent <- margs_interactive_pop_cent %>%
+  mutate(model = 'main')
+
+load(here::here('Figure Data/marg_eff_pop_df_gadm_cy.RData'))
+margs_interactive_pop_gadm <- margs_interactive_pop_gadm %>% mutate(model = 'gadm')
+
+load(here::here('Figure Data/marg_eff_pop_df_grid_cy.RData'))
+margs_interactive_pop_grid <- margs_interactive_pop_grid %>% mutate(model = 'grid')
+
+
+pdf(here::here('Figures/pd_margs_placebo_pop_cy.pdf'), width = 8, height = 3)
+mget(ls(pattern = 'margs_interactive_pop')) %>%
+  bind_rows() %>% 
+  mutate(model = factor(model, levels = c('main', 'gadm', 'grid'))) %>% 
+  ggplot(aes(x = mod, y = pe, ymin = lo, ymax = hi)) +
+  geom_ribbon(fill = wes_palette('GrandBudapest1', 1), alpha = 0.25) + 
+  geom_line(color = wes_palette('GrandBudapest1', 1)) +
+  labs(x = expression(italic(ln)~' Capital Distance (centered)'),
+       y = expression('Marginal Effect of '~italic(ln)~' Population')) +
+  facet_wrap(~ model, labeller = as_labeller(c('main' = 'Ethnic Groups',
+                                               'gadm' = 'Administrative Units',
+                                               'grid' = 'PRIO GRID')),
+             scales = 'free_x') +
+  theme_rw()
+dev.off()
+
+## load marginal effects dataframes for main, GADM, and grid border models
+load(here::here('Figure Data/marg_eff_bord_cent_df_cy.RData'))
+margs_interactive_bord_cent <- margs_interactive_bord_cent %>%
+  mutate(model = 'main')
+
+load(here::here('Figure Data/marg_eff_bord_df_gadm_cy.RData'))
+margs_interactive_bord_gadm <- margs_interactive_bord_gadm %>% mutate(model = 'gadm')
+
+load(here::here('Figure Data/marg_eff_bord_df_grid_cy.RData'))
+margs_interactive_bord_grid <- margs_interactive_bord_grid %>% mutate(model = 'grid')
+
+
+pdf(here::here('Figures/pd_margs_placebo_bord_cy.pdf'), width = 8, height = 3)
+mget(ls(pattern = 'margs_interactive_bord')) %>%
+  bind_rows() %>%
+  mutate(model = factor(model, levels = c('main', 'gadm', 'grid'))) %>% 
+  ggplot(aes(x = mod, y = pe, ymin = lo, ymax = hi)) +
+  geom_ribbon(fill = wes_palette('GrandBudapest1', 1), alpha = 0.25) + 
+  geom_line(color = wes_palette('GrandBudapest1', 1)) +
+  labs(x = expression(italic(ln)~' Capital Distance (centered)'),
+       y = 'Marginal Effect of Border') +
+  facet_wrap(~ model, labeller = as_labeller(c('main' = 'Ethnic Groups',
+                                               'gadm' = 'Administrative Units',
+                                               'grid' = 'PRIO GRID')),
+             scales = 'free_x') +
+  theme_rw()
+dev.off()
+
 
 
 ## appendix population and border prior sensitivity plots ####
@@ -202,7 +258,7 @@ margs_gg_bord %>%
   geom_line(color = wes_palette('GrandBudapest1', 1)) +
   geom_rug(data = groups_log_excl, aes(x = cap_dist), inherit.aes = F,
            alpha = .01) +
-  labs(expression(italic(ln)~' Capital Distance'),
+  labs(x = expression(italic(ln)~' Capital Distance'),
        y = 'Marginal Effect of Border') +
   facet_wrap(~ model, labeller = as_labeller(c('1' = 'Model G.5',
                                                '2' = 'Model G.6'))) +
@@ -252,85 +308,9 @@ margs_gg_bord %>%
   geom_line(color = wes_palette('GrandBudapest1', 1)) +
   geom_rug(data = groups_log_excl2, aes(x = cap_dist), inherit.aes = F,
            alpha = .01) +
-  labs(expression(italic(ln)~' Capital Distance'),
+  labs(x = expression(italic(ln)~' Capital Distance'),
        y = 'Marginal Effect of Border') +
   facet_wrap(~ model, labeller = as_labeller(c('1' = 'Model G.11',
                                                '2' = 'Model G.12'))) +
   theme_rw()
 dev.off()
-
-
-
-## placebo plots ####
-
-## load marginal effects dataframes for main, GADM, and grid population models
-load(here::here('Figure Data/marg_eff_pop_df_cy.RData'))
-margs_gg_pop <- margs_gg_pop %>%
-  filter(model == 1) %>%
-  select(-model) %>% 
-  rename(mean = pe) %>% 
-  mutate(model = 'main')
-
-load(here::here('Figure Data/marg_eff_pop_df_gadm_cy.RData'))
-margs_interactive_pop_gadm <- margs_interactive_pop_gadm %>% mutate(model = 'gadm')
-
-load(here::here('Figure Data/marg_eff_pop_df_grid_cy.RData'))
-margs_interactive_pop_grid <- margs_interactive_pop_grid %>% mutate(model = 'grid')
-
-
-pdf(here::here('Figures/pd_margs_placebo_pop_cy.pdf'), width = 8, height = 3)
-mget(ls(pattern = 'margs_interactive_pop|margs_gg_pop$')) %>%
-  bind_rows() %>% 
-  mutate(model = factor(model, levels = c('main', 'gadm', 'grid'))) %>% 
-  ggplot(aes(x = mod, y = mean, ymin = lo, ymax = hi)) +
-  geom_ribbon(fill = wes_palette('GrandBudapest1', 1), alpha = 0.25) + 
-  geom_line(color = wes_palette('GrandBudapest1', 1)) +
-  labs(x = expression(italic(ln)~' Capital Distance'),
-       y = expression('Marginal Effect of '~italic(ln)~' Population')) +
-  facet_wrap(~ model, labeller = as_labeller(c('main' = 'Ethnic Groups',
-                                               'gadm' = 'Administrative Units',
-                                               'grid' = 'PRIO GRID')),
-             scales = 'free_x') +
-  theme_rw()
-dev.off()
-
-## load marginal effects dataframes for main, GADM, and grid border models
-load(here::here('Figure Data/marg_eff_bord_df_cy.RData'))
-margs_gg_bord <- margs_gg_bord %>%
-  filter(model == 1) %>%
-  select(-model) %>% 
-  rename(mean = pe) %>% 
-  mutate(model = 'main')
-
-load(here::here('Figure Data/marg_eff_bord_df_gadm_cy.RData'))
-margs_interactive_bord_gadm <- margs_interactive_bord_gadm %>% mutate(model = 'gadm')
-
-load(here::here('Figure Data/marg_eff_bord_df_grid_cy.RData'))
-margs_interactive_bord_grid <- margs_interactive_bord_grid %>% mutate(model = 'grid')
-
-
-pdf(here::here('Figures/pd_margs_placebo_bord_cy.pdf'), width = 8, height = 3)
-mget(ls(pattern = 'margs_interactive_bord|margs_gg_bord$')) %>%
-  bind_rows() %>%
-  mutate(model = factor(model, levels = c('main', 'gadm', 'grid'))) %>% 
-  ggplot(aes(x = mod, y = mean, ymin = lo, ymax = hi)) +
-  geom_ribbon(fill = wes_palette('GrandBudapest1', 1), alpha = 0.25) + 
-  geom_line(color = wes_palette('GrandBudapest1', 1)) +
-  labs(expression(italic(ln)~' Capital Distance'),
-       y = 'Marginal Effect of Border') +
-  facet_wrap(~ model, labeller = as_labeller(c('main' = 'Ethnic Groups',
-                                               'gadm' = 'Administrative Units',
-                                               'grid' = 'PRIO GRID')),
-             scales = 'free_x') +
-  theme_rw()
-dev.off()
-
-
-
-
-## quit R
-quit(save = 'no')
-
-###################
-## end of script ##
-###################

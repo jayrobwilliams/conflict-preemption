@@ -1,10 +1,3 @@
-###############################
-## author: Rob Williams      ##
-## project: dissertation     ##
-## created: October 10, 2019 ##
-## updated: October 10, 2019 ##
-###############################
-
 ## this script produces the proportion of separatist groups that are ethnic or
 ## religious in nature on p. 12 (accompanied by footnote 3) and Table K.1
 
@@ -17,13 +10,9 @@ set.seed(1234)
 
 ## load data
 groups <- readRDS(here::here('Input Data/groups_nightlights.RDS'))
-
 forge <- rio::import(here::here('Datasets/FORGE/forge_v1.0_public.xlsx'))
-
 acd <- read.csv(here::here('Datasets/UCDP/ucdp-prio-acd-181.csv'))
-
 acd_dyad <- read.csv(here::here('Datasets/UCDP/ucdp-dyadic-181.csv'))
-
 acd2epr <- read.csv(here::here('Datasets/EPR/ACD2EPR-2018.csv'))
 
 ## proportion of separatist conflicts that are ethnic or religious
@@ -120,12 +109,3 @@ tabstr <- sub('\\\\hline\\nAIC',
 fileConn <- file(here::here('Tables/pd_onset_fixed_cy.tex'))
 writeLines(tabstr, fileConn)
 close(fileConn)
-
-
-
-## quit script
-quit(save = 'no')
-
-###################
-## end of script ##
-###################

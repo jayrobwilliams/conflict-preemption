@@ -1,12 +1,6 @@
-###############################
-## author: Rob Williams      ##
-## project: dissertation     ##
-## created: February 4, 2018 ##
-## updated: Janurary 2, 2019 ##
-###############################
-
 ## this script executes panel data bayesian linear regressions models of
 ## nightlights in ethnic group territories with country and year random effects
+## using grid cells as the unit of analysis
 
 ## print script to identify in log
 print(paste('Nightlights Border Grid Analysis Started', Sys.time()))
@@ -78,7 +72,8 @@ margs_interactive_bord_grid <- mcmcMargEff(mod_int_bord, 'b_border',
                                            plot = F)
 
 ## write marginal effects plot dataframe to disk
-save(margs_interactive_bord_grid, file = here::here('Figure Data/marg_eff_bord_df_grid_cy.RData'))
+save(margs_interactive_bord_grid,
+     file = here::here('Figure Data/marg_eff_bord_df_grid_cy.RData'))
 
 
 

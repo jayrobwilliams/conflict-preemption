@@ -1,28 +1,9 @@
-#######################################
-## author: Rob Williams              ##
-## contact: jayrobwilliams@gmail.com ##
-## project: dissertation             ##
-## created: December 11, 2017        ##
-## updated: June 6, 2018             ##
-#######################################
-
 ## this script extracts the spatial components of the territorial governability
 ## measure from each ethnic group-year polygon, including population, nightlights,
 ## travel times, and various statistics calculated based on them
 
-
-## naga in myanmar have gwgroupid for naga in india; need to check if script is
-## pulling the indian or myanmar polygon for these observations
-
-
 ## print script to identify in log
 print(paste('GADM Variable Creation Started', Sys.time()))
-
-## clear environment
-rm(list = ls())
-
-## set working directory
-setwd("~/Dropbox/UNC/Dissertation/Onset")
 
 ## load packages
 library(sf) # new unified spatial package

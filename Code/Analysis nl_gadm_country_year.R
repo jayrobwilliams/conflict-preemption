@@ -1,12 +1,6 @@
-###############################
-## author: Rob Williams      ##
-## project: dissertation     ##
-## created: February 4, 2018 ##
-## updated: Janurary 2, 2019 ##
-###############################
-
 ## this script executes panel data bayesian linear regressions models of
 ## nightlights in ethnic group territories with country and year random effects
+## using administrative units as the unit of analysis
 
 ## print script to identify in log
 print(paste('Nightlights GADM Analysis Started', Sys.time()))

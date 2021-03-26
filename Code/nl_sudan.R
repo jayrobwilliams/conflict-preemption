@@ -1,10 +1,3 @@
-################################
-## author: Rob Williams       ##
-## project: dissertation      ##
-## created: November 18, 2019 ##
-## updated: November 24, 2019 ##
-################################
-
 ## this script calculates correlations between nightlights and security
 ## personnel numbers in Southern Sudan in 2008 on p. 13
 
@@ -45,12 +38,3 @@ sudan_nl <- extract(nl, sudan, fun = sum)
 
 ## figure out appropriate variable to correlate w/ nightlights
 cor(log1p(sudan_nl), sudan$Pers_Sec, use = 'complete.obs')
-
-
-
-## quit script
-quit(save = 'no')
-
-###################
-## end of script ##
-###################

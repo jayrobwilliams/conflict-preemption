@@ -1,32 +1,3 @@
-#######################################
-## author: Rob Williams              ##
-## contact: jayrobwilliams@gmail.com ##
-## project: misc R functions         ##
-## created: July 9, 2017             ##
-## updated: September 13, 2017       ##
-#######################################
-
-
-
-##
-##
-##
-##
-
-
-## load required packages
-require(sf)
-
-## downgrade a simplefeature geometry object to a dataframe
-st_drop_geometry <- function(x) {
-  if(inherits(x,"sf")) {
-    x <- st_set_geometry(x, NULL)
-    class(x) <- 'data.frame'
-  }
-  return(x)
-}
-
-
 ## determine which UTM zone a longitude value falls in
 long2UTM <- function(long) {
   (floor((long + 180)/6) %% 60) + 1
@@ -42,11 +13,6 @@ chooseUTM <- function(long) {
   zone <- round(mean(long2UTM(long)))
   zone
 }
-
-## !!!! this is a bigass hammer to drive a small nail. picking a single UTM zone for features
-## that lie in many zones results in distortion of distance estimates. this is especially
-## problematic in large countries like the US or China that span several UTM zones and in
-## areas far from the equator
 
 ## determine which UTM zone the majority of a spatial object falls within and project the
 ## object using that UTM zone.
@@ -128,9 +94,3 @@ max.polydist <- function(poly, point) {
   return(max(dists))
   
 }
-
-
-
-###################
-## end of script ##
-###################

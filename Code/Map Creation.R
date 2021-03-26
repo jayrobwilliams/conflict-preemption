@@ -1,37 +1,16 @@
-#######################################
-## author: Rob Williams              ##
-## contact: jayrobwilliams@gmail.com ##
-## project: dissertation             ##
-## created: July 31, 2018            ##
-## updated: July 31, 2018            ##
-#######################################
-
-## this script extracts the spatial components of the territorial governability
-## measure from each ethnic group-year polygon, including population, nightlights,
-## travel times, and various statistics calculated based on them
-
-
-## naga in myanmar have gwgroupid for naga in india; need to check if script is
-## pulling the indian or myanmar polygon for these observations
-
-
-## print script to identify in log
-print(paste('Map Creation Started', Sys.time()))
+## this script creates maps illustrating population and nightlights in China
 
 ## load packages
 library(sf) # new unified spatial package
-library(sp) # basic spatial data handling
 library(raster) # pixel based data
 library(rgdal) # spatial data I/O
 library(rgeos) # spatial topology operations
 library(dplyr)
-library(spdplyr)
 library(stringr)
 library(data.table)
 
 source(here::here('Code/sfFunctions.R'))
 source(here::here('Code/cshapes Recode.R'))
-
 
 
 
@@ -51,8 +30,7 @@ GeoEPR <- st_read(here::here('Datasets/EPR'), 'GeoEPR-2014 Cleaned')
 EPR <- read.csv(here::here('Datasets/EPR/EPR-2014.csv'))
 
 ## read in population rasters
-population_cnt <- stack(list.files(here::here('Datasets/Population',
-                                              'Count Corrected'),
+population_cnt <- stack(list.files(here::here('Datasets/Population/Corrected'),
                                    '.tif', full.names = T))
 
 ## read in nightlights rasters

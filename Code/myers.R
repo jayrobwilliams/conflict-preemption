@@ -1,8 +1,3 @@
-##################################
-## author: Rob Williams         ##
-## project: conflict preemption ##
-##################################
-
 ## this script calculate the correlation between Myers numbers and nightlights
 ## reported on p. 14 (accompanied by footnote 5)
 
@@ -24,12 +19,3 @@ myers <- inner_join(myers, gadm, by = c('countryname' = 'state',
 
 ## calculate correlation b/w Myers numbers and nightlights
 cor(myers$nl, myers$myers)
-
-
-
-## quit script
-quit(save = 'no')
-
-###################
-## end of script ##
-###################

@@ -1,21 +1,12 @@
-###############################
-## author: Rob Williams      ##
-## project: dissertation     ##
-## created: February 4, 2018 ##
-## updated: Janurary 2, 2019 ##
-###############################
-
 ## this script executes panel data bayesian linear regressions models of
 ## nightlights in ethnic group territories with country and year random effects
+## limited to politically excluded groups
 
 ## print script to identify in log
 print(paste('Nightlights Analysis Started', Sys.time()))
 
 ## load packages
 library(tidyverse)
-library(vdem)
-library(WDI)
-library(countrycode)
 library(mice)
 library(brms)
 library(loo)
@@ -377,26 +368,32 @@ writeLines(paste0('The marginal effect of population on nightlights is ',
 close(fileConn)
 
 ## get marginal effects for interactive population models
-margs_interactive_pop <- mcmcMargEff(mod_int_pop, 'b_pop_tot', 'b_cap_dist:pop_tot',
+margs_interactive_pop <- mcmcMargEff(mod_int_pop, 'b_pop_tot',
+                                     'b_cap_dist:pop_tot',
                                      groups_log$cap_dist, plot = F)
-margs_controls_pop <- mcmcMargEff(mod_int_pop_controls, 'b_pop_tot', 'b_cap_dist:pop_tot',
+margs_controls_pop <- mcmcMargEff(mod_int_pop_controls, 'b_pop_tot',
+                                  'b_cap_dist:pop_tot',
                                   groups_log$cap_dist, plot = F)
 margs_gg_pop <- rbind(data.frame(margs_interactive_pop, model = 1),
                       data.frame(margs_controls_pop, model = 2))
 
 ## write marginal effects plot dataframe to disk
-save(margs_gg_pop, file = here::here('Figure Data/marg_eff_pop_df_excl_cy.RData'))
+save(margs_gg_pop,
+     file = here::here('Figure Data/marg_eff_pop_df_excl_cy.RData'))
 
 ## get marginal effects for interactive border models
-margs_interactive_bord <- mcmcMargEff(mod_int_bord, 'b_borderTRUE', 'b_cap_dist:borderTRUE',
+margs_interactive_bord <- mcmcMargEff(mod_int_bord, 'b_borderTRUE',
+                                      'b_cap_dist:borderTRUE',
                                       groups_log$cap_dist, plot = F)
-margs_controls_bord <- mcmcMargEff(mod_int_bord_controls, 'b_borderTRUE', 'b_cap_dist:borderTRUE',
+margs_controls_bord <- mcmcMargEff(mod_int_bord_controls, 'b_borderTRUE',
+                                   'b_cap_dist:borderTRUE',
                                    groups_log$cap_dist, plot = F)
 margs_gg_bord <- rbind(data.frame(margs_interactive_bord, model = 1),
                        data.frame(margs_controls_bord, model = 2))
 
 ## write marginal effects plot dataframe to disk
-save(margs_gg_bord, file = here::here('Figure Data/marg_eff_bord_df_excl_cy.RData'))
+save(margs_gg_bord,
+     file = here::here('Figure Data/marg_eff_bord_df_excl_cy.RData'))
 
 
 

@@ -1,11 +1,3 @@
-#######################################
-## author: Rob Williams              ##
-## contact: jayrobwilliams@gmail.com ##
-## project: dissertation             ##
-## created: May 17, 2018             ##
-## updated: May 17, 2018             ##
-#######################################
-
 ## this script recodes countries in cshapes that change status within the same
 ## year. this happens when borders change or capitals are moved and the effective
 ## date is anything other than december 31. it uses a rule where any change that
@@ -13,8 +5,7 @@
 ## ending the previous year. if a change occurs in the second half of a year,
 ## that year is the last year of the previous iteration of the country and the
 ## new iteration begins the following year. it requires that cshapes has been
-## loaded from shapefile into a spatialpointsdataframe
-
+## loaded from shapefile into a spatialpointsdataframe or sfc
 cshapes.rc <- function(cshapes) {
   
   ## load packages

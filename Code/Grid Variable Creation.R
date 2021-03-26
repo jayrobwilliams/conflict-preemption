@@ -1,37 +1,16 @@
-#######################################
-## author: Rob Williams              ##
-## contact: jayrobwilliams@gmail.com ##
-## project: dissertation             ##
-## created: December 11, 2017        ##
-## updated: December 30, 2018        ##
-#######################################
-
 ## this script extracts the spatial components of the territorial governability
 ## measure from each ethnic group-year polygon, including population, nightlights,
 ## travel times, and various statistics calculated based on them
 
-
-## naga in myanmar have gwgroupid for naga in india; need to check if script is
-## pulling the indian or myanmar polygon for these observations
-
-
 ## print script to identify in log
 print(paste('Grid Variable Creation Started', Sys.time()))
 
-## clear environment
-rm(list = ls())
-
-## set working directory
-setwd("~/Dropbox/UNC/Dissertation/Onset")
-
 ## load packages
 library(sf) # new unified spatial package
-library(sp) # basic spatial data handling
 library(raster) # pixel based data
 library(rgdal) # spatial data I/O
 library(rgeos) # spatial topology operations
 library(tidyverse)
-library(spdplyr)
 library(stringr)
 library(data.table)
 
@@ -39,7 +18,6 @@ source(here::here('Code/sfFunctions.R'))
 source(here::here('Code/cshapes Recode.R'))
 
 library(doParallel)
-## get number of cores from SLURM submission script
 registerDoParallel(as.numeric(Sys.getenv('SLURM_CPUS_PER_TASK')))
 
 
@@ -186,13 +164,13 @@ grid_data <- do.call(rbind, grid_data) %>%
 ## save grid data
 saveRDS(grid_data, here::here('Input Data/grid data.RDS'))
 
+
+
 ## print script to verify successful execution in log
 print(paste('Grid Variable Creation Completed', Sys.time()))
 
 ## quit R
 quit(save = 'no')
-
-
 
 ###################
 ## End of Script ##

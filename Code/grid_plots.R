@@ -1,3 +1,6 @@
+## this script create an illustration of the different spatial units used in the
+## geographic placebo test
+
 library(tidyverse)
 library(sf)
 library(RWmisc)

@@ -1,10 +1,3 @@
-###############################
-## author: Rob Williams      ##
-## project: dissertation     ##
-## created: October 10, 2019 ##
-## updated: October 10, 2019 ##
-###############################
-
 ## this script produces Figure 1 and the figure of percentage of ethnic groups
 ## excluded from political power on p. 3 (accompanied by footnote 1)
 
@@ -65,12 +58,3 @@ epr %>%
   filter(to >= 1992) %>% 
   summarize(excl = sum(!status %in% c('DOMINANT', 'SENIOR PARTNER',
                                       'MONOPOLY', 'JUNIOR PARTNER')) / n())
-
-
-
-## quit script
-quit(save = 'no')
-
-###################
-## end of script ##
-###################
