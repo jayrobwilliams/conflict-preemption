@@ -1,14 +1,7 @@
-#################################
-## author: Rob Williams        ##
-## project: dissertation       ##
-## created: September 26, 2016 ##
-## updated: January 11, 2018   ##
-#################################
-
-## this script is written to take advantage of structure in the names of DMSP-OLS raster files,
-## if they change naming conventions in the future, the script may not work any longer. see
-## the readme for more discussion of how this script is written
-
+## this script is written to take advantage of structure in the names of
+## DMSP-OLS raster files, if they change naming conventions in the future, the
+## script may not work any longer. see the readme for more discussion of how
+## this script is written
 
 ## print script to identify in log
 print(paste('Nightlights Intercalibration Started', Sys.time()))
@@ -19,10 +12,7 @@ keep.input <- T
 ## archive the output for easier retrieval from cluster?
 archive.output <- T
 
-
-
-## packages ####
-
+## load packages
 library(sp)
 library(raster)
 library(rgdal)
@@ -72,7 +62,8 @@ okinawa_ref <- mask(okinawa_ref, okinawa)
 pr_ref <- crop(nl_ref, pr)
 pr_ref <- mask(pr_ref, pr)
 
-## extract data from invariant region, drop IDs since they are inherite from polygons used to crop
+## extract data from invariant region, drop IDs since they are inherited
+## from polygons used to crop
 mauritius_data <- extract(mauritius_nl, mauritius, df = T)
 mauritius_data$ID <- NULL
 okinawa_data <- extract(okinawa_nl, okinawa, df = T)
@@ -105,8 +96,9 @@ foreach(i = 2:ncol(model_data), .packages = 'raster') %dopar% {
   
 }
 
-## calibrate each nightlights raster using coefficients from intercalibration model
-## note that model object names need to be passed to loop w/ .export for use of get()s
+## calibrate each nightlights raster using coefficients from intercalibration
+## model note that model object names need to be passed to loop w/ .export for
+## use of get()s
 foreach(i = 2:ncol(model_data), .export = ls(pattern = 'mod_'), .packages = 'raster') %dopar% {
   
   predict(nl[[i-1]], get(paste('mod', names(model_data)[i], sep = '_')),
@@ -135,8 +127,9 @@ overlap <- grep('\\.', names(nl))
 ## create output directory for calibrated and averaged raster files
 dir.create(here::here('Datasets/Nightlights/Output'), showWarnings = F)
 
-## loop to average overlapping years; this only works because there are only ever two of the same
-## year -- this logic WILL NOT WORK if there are years with three rasters
+## loop to average overlapping years; this only works because there are only
+## ever two of the same year -- this logic WILL NOT WORK if there are years with
+## three rasters
 foreach(i = 1:length(overlap), .packages = 'raster') %dopar% {
   
   ## skip even numbers, operating on i and i+1 captures pairs of odds and evens
@@ -191,6 +184,8 @@ if (archive.output == T) {
       compression = 'gzip')
   
 }
+
+
 
 ## print script to verify successful execution in log
 print(paste('Nightlights Intercalibration Completed', Sys.time()))

@@ -1,17 +1,8 @@
-#######################################
-## author: Rob Williams              ##
-## contact: jayrobwilliams@gmail.com ##
-## project: dissertation             ##
-## created: June 15, 2018            ##
-## updated: December 15, 2018        ##
-#######################################
-
 ## this script weights raster files by the number of ethnic group polygons that
 ## overlap each cell in the raster. this is the low resolution version for
 ## population rasters. a cell covered by one group polygon in a given year is
 ## unchanged, while a cell covered by two polygons in a given year is
 ## multiplied by .5
-
 
 ## print script to identify in log
 print(paste('Low Resolution Overlap Correction Started', Sys.time()))
@@ -100,13 +91,13 @@ foreach (i = 1:dim(population_cnt)[3], .packages = c('sf', 'raster')) %dopar% {
   
 }
 
+
+
 ## print script to verify successful execution in log
 print(paste('Low Resolution Overlap Correction Completed', Sys.time()))
 
 ## quit R
 quit(save = 'no')
-
-
 
 ###################
 ## End of Script ##
