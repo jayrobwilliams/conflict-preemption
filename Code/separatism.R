@@ -18,14 +18,26 @@ acd2epr <- read.csv(here::here('Datasets/EPR/ACD2EPR-2018.csv'))
 ## proportion of separatist conflicts that are ethnic or religious
 forge <- forge %>% filter(goalindep == 1)
 
-mean(forge$ethnic == 1 | forge$religious == 1)
+frg_rlg_1946 <- mean(forge$ethnic == 1 | forge$religious == 1) %>% 
+  round(4) * 100
 
 ## subset to post 1992
 forge <- forge %>%
   filter(fightyear >= 1992)
 
 ## proportion of separatist conflicts that are ethnic or religious post 1992
-mean(forge$ethnic == 1 | forge$religious == 1)
+frg_rlg_1992 <- mean(forge$ethnic == 1 | forge$religious == 1) %>% 
+  round(4) * 100
+
+## save share separatist groups ethnic/regligous
+fileConn <- file(here::here('Tables/forge_sep_ethrel.txt'))
+writeLines(paste0('The share of separatist groups coded as ethnic or religious since 1946 is ',
+                  frg_rlg_1946, '%\n',
+                  'The share of separatist groups coded as ethnic or religious since 1992 is ',
+                  frg_rlg_1992, '%'),
+           fileConn)
+close(fileConn)
+
 
 ## subset to variables for onset analysis
 forge <- forge %>% select(conflict_id, dyad_id = dyadid, gname, fightyear,
@@ -86,8 +98,8 @@ mod <- glm(goalindep ~ nl + cap_dist + as.factor(state_ind) + spell + spell2 + s
 
 ## logit conflict onset table
 tabstr <- texreg::texreg(mod, stars = .05,
-                         custom.coef.map = list('nl' = 'Nightlights',
-                                                'cap_dist' = 'Capital Distance'),
+                         custom.coef.map = list('nl' = '\\emph{ln} Nightlights',
+                                                'cap_dist' = '\\emph{ln} Capital Distance'),
                          caption = 'Logit analysis of separatist conflict onset',
                          custom.model.names = 'Model K.1',
                          float.pos = 'ht!', label = 'tab:nl_onset') 

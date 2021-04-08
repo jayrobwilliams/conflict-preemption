@@ -45,16 +45,33 @@ dev.off()
 ## politicial exclusion 1946-
 epr %>% 
   summarize(excl = sum(!status %in% c('DOMINANT', 'SENIOR PARTNER',
-                                      'MONOPOLY', 'JUNIOR PARTNER')) / n())
+                                      'MONOPOLY', 'JUNIOR PARTNER')) / n()) %>% 
+  as.numeric() %>% 
+  round(4) * 100 -> excl_1946
 
 ## politicial exclusion 1960-
 epr %>% 
   filter(to >= 1960) %>% 
   summarize(excl = sum(!status %in% c('DOMINANT', 'SENIOR PARTNER',
-                                      'MONOPOLY', 'JUNIOR PARTNER')) / n())
+                                      'MONOPOLY', 'JUNIOR PARTNER')) / n()) %>% 
+  as.numeric() %>% 
+  round(4) * 100 -> excl_1960
 
 ## politicial exclusion 1992-
 epr %>% 
   filter(to >= 1992) %>% 
   summarize(excl = sum(!status %in% c('DOMINANT', 'SENIOR PARTNER',
-                                      'MONOPOLY', 'JUNIOR PARTNER')) / n())
+                                      'MONOPOLY', 'JUNIOR PARTNER')) / n()) %>% 
+  as.numeric() %>% 
+  round(4) * 100 -> excl_1992
+
+## save excluded share
+fileConn <- file(here::here('Tables/epr_excl.txt'))
+writeLines(paste0('The share of politically excluded groups since 1946 is ',
+                  excl_1946, '%\n',
+                  'The share of politically excluded groups since 1960 is ',
+                  excl_1960, '%\n',
+                  'The share of politically excluded groups since 1992 is ',
+                  excl_1992, '%'),
+           fileConn)
+close(fileConn)
