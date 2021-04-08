@@ -211,8 +211,8 @@ margs_gg %>%
            alpha = .01) +
   labs(x = expression(italic(ln)~' Capital Distance'),
        y = 'Marginal Effect of Population Gini') +
-  facet_wrap(~ model, labeller = as_labeller(c('1' = 'Model G.2',
-                                               '2' = 'Model G.3'))) +
+  facet_wrap(~ model, labeller = as_labeller(c('1' = 'Model H.2',
+                                               '2' = 'Model H.3'))) +
   theme_rw()
 dev.off()
 
