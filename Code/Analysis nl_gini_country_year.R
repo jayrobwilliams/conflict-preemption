@@ -179,7 +179,7 @@ mod_int_controls_rmse <- foreach(i = mod_int_controls_list, .packages = 'brms') 
 ## interactive population models table 
 tabstr <- mcmcReg(list(mod_bivar_gini, mod_int, mod_int_controls),
                   custom.coef.map = tab_map,
-                  custom.model.names = paste('Model', 6:8),
+                  custom.model.names = paste0('Model H.', 1:3),
                   gof = list(c(mod_bivar_gini_waic$estimates['waic', 'Estimate'],
                                mean(mod_bivar_gini_rmse)),
                              c(mod_int_waic$estimates['waic', 'Estimate'],

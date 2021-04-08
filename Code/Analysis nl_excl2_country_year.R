@@ -263,7 +263,7 @@ mod_int_bord_controls_rmse <- foreach(i = mod_int_bord_controls_list, .packages 
 ## population models table 
 tabstr <- mcmcReg(list(mod_bivar_pop, mod_int_pop, mod_int_pop_controls),
                   custom.coef.map = tab_map,
-                  custom.model.names = paste('Model', 1:3),
+                  custom.model.names = paste0('Model G.', 7:9),
                   gof = list(c(mod_bivar_pop_waic$estimates['waic', 'Estimate'],
                                mean(mod_bivar_pop_rmse)),
                              c(mod_int_pop_waic$estimates['waic', 'Estimate'],
@@ -300,7 +300,7 @@ close(fileConn)
 ## border models table 
 tabstr <- mcmcReg(list(mod_bivar_bord, mod_int_bord, mod_int_bord_controls),
                   custom.coef.map = tab_map,
-                  custom.model.names = paste('Model', 4:6),
+                  custom.model.names = paste0('Model G.', 10:12),
                   gof = list(c(mod_bivar_bord_waic$estimates['waic', 'Estimate'],
                                mean(mod_bivar_bord_rmse)),
                              c(mod_int_bord_waic$estimates['waic', 'Estimate'],

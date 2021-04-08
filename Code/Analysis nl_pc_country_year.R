@@ -162,7 +162,7 @@ mod_bivar_dist_controls_rmse <- foreach(i = mod_bivar_dist_controls_list, .packa
 ## distance models table 
 tabstr <- mcmcReg(list(mod_bivar_dist, mod_bivar_dist_controls),
                   custom.coef.map = tab_map,
-                  custom.model.names = paste('Model', 1:2),
+                  custom.model.names = paste0('Model I.', 1:2),
                   gof = list(c(mod_bivar_dist_waic$estimates['waic', 'Estimate'],
                                mean(mod_bivar_dist_rmse)),
                              c(mod_bivar_dist_controls_waic$estimates['waic', 'Estimate'],
