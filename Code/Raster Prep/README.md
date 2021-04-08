@@ -43,4 +43,3 @@ notes:
 - This code is written for data where there are never more than two rasters for the same year. If DSMP data are released in the future where there are years with rasters from three different satellites, this script will not work.
 
 - Other choices of invariant region(s) can be used. The code just needs to be adapted to employ them instead. This may be preferable if you are only interested in performing intercalibrations on a subset of the data instead of the entire world.
-
