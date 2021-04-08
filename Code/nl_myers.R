@@ -17,5 +17,9 @@ myers <- inner_join(myers, gadm, by = c('countryname' = 'state',
   mutate(across(c(nl, myers), log)) %>% 
   filter(!is.na(myers), !is.na(nl))
 
-## calculate correlation b/w Myers numbers and nightlights
-cor(myers$nl, myers$myers)
+## save correlation b/w Myers numbers and nightlights
+fileConn <- file(here::here('Tables/nl_sudan.txt'))
+writeLines(paste0('The correlation between Myers numbers and nightlights is ',
+                  round(cor(myers$nl, myers$myers), 2)),
+           fileConn)
+close(fileConn)
