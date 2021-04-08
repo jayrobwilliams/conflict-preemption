@@ -158,7 +158,7 @@ groups_log %>% select(nl, cap_dist, pop_tot, border, area, excluded,
 dev.off()
 
 ## calculate bivariate correlations
-fileConn <- file(here::here('Tables/bivar_cor.tex'))
+fileConn <- file(here::here('Tables/bivar_cor.txt'))
 writeLines(paste0('The correlation between population and nightlights is ',
                   cor(groups_log$nl, groups_log$pop_tot),
                   'The correlation between population concentration and nightlights is ',
