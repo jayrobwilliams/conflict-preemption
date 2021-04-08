@@ -57,6 +57,7 @@ groups_log %>% select(nl, cap_dist, pop_tot, border, area, excluded,
   gather() %>% 
   ggplot(aes(x = value)) +
   geom_histogram() +
+  labs(x = 'Value', y = 'Frequency') +
   facet_wrap(~ key, scales = 'free', nrow = 3, labeller = desc_labs) +
   theme_rw()
 dev.off()
@@ -188,7 +189,7 @@ margs_gg_bord_prior %>%
   geom_line(color = wes_palette('GrandBudapest1', 1)) +
   geom_rug(data = groups_log, aes(x = cap_dist), inherit.aes = F,
            alpha = .01) +
-  labs(expression(italic(ln)~' Capital Distance'),
+  labs(x = expression(italic(ln)~' Capital Distance'),
        y = 'Marginal Effect of Border') +
   facet_wrap(~ model, labeller = as_labeller(c('1' = 'Narrow priors',
                                                '2' = 'Wide priors'))) +
