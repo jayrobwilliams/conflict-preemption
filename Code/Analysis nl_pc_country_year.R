@@ -189,7 +189,7 @@ tabstr <- sub('\\\\hline\\n\\\\multicolumn',
                      ' \\\\\\\\\n\\\\hline\n\\\\multicolumn'),
               tabstr)
 
-fileConn <- file(here::here('Tables NL/pd_nlpc_cy.tex'))
+fileConn <- file(here::here('Tables/pd_nlpc_cy.tex'))
 writeLines(tabstr, fileConn)
 close(fileConn)
 

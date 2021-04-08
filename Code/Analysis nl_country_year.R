@@ -330,7 +330,7 @@ tabstr <- sub('\\\\hline\\n\\\\multicolumn',
                      ' \\\\\\\\\n\\\\hline\n\\\\multicolumn'),
               tabstr)
 
-fileConn <- file(here::here('Tables NL/pd_pop_cy.tex'))
+fileConn <- file(here::here('Tables/pd_pop_cy.tex'))
 writeLines(tabstr, fileConn)
 close(fileConn)
 
@@ -367,7 +367,7 @@ tabstr <- sub('\\\\hline\\n\\\\multicolumn',
                      ' \\\\\\\\\n\\\\hline\n\\\\multicolumn'),
               tabstr)
 
-fileConn <- file(here::here('Tables NL/pd_bord_cy.tex'))
+fileConn <- file(here::here('Tables/pd_bord_cy.tex'))
 writeLines(tabstr, fileConn)
 close(fileConn)
 
@@ -405,7 +405,7 @@ tabstr <- sub('\\\\hline\\nAdj.',
                      ' \\\\\\\\\n\\\\hline\nAdj'),
               tabstr)
 
-fileConn <- file(here::here('Tables NL/pd_fixed_cy.tex'))
+fileConn <- file(here::here('Tables/pd_fixed_cy.tex'))
 writeLines(tabstr, fileConn)
 close(fileConn)
 
@@ -470,7 +470,7 @@ marg_eff_pop <- colMeans(marg_pop)
 marg_pct_pop <- marg_eff_pop / diff(range(groups_log$nl)) * 100
 
 ## write marginal effect differences
-fileConn <- file(here::here('Tables NL/marg_eff_pop_cy.txt'))
+fileConn <- file(here::here('Tables/marg_eff_pop_cy.txt'))
 writeLines(paste0('The marginal effect of population on nightlights is ',
                   marg_eff_pop[1],
                   ' (', marg_pct_pop[1],
@@ -503,7 +503,7 @@ marg_eff_bord <- colMeans(marg_bord)
 marg_pct_bord <- marg_eff_bord / diff(range(groups_log$nl)) * 100
 
 ## write marginal effect differences
-fileConn <- file(here::here('Tables NL/marg_eff_bord_cy.txt'))
+fileConn <- file(here::here('Tables/marg_eff_bord_cy.txt'))
 writeLines(paste0('The marginal effect of population on nightlights is ',
                   marg_eff_bord[1],
                   ' (', marg_pct_bord[1],
@@ -533,7 +533,7 @@ pct_eff_pop_controls <- max_eff_pop_controls / diff(range(groups_log$nl)) * 100
 pct_eff_bord_controls <- max_eff_bord_controls / diff(range(groups_log$nl)) * 100
 
 ## calculate effect magnitudes
-fileConn <- file(here::here('Tables NL/max_eff_cy.txt'))
+fileConn <- file(here::here('Tables/max_eff_cy.txt'))
 writeLines(paste0('\nThe maximum marginal effect of population conditional on distance on nightlights is ',
                   max_eff_pop_interactive, ' (', pct_eff_pop_interactive, '%)',
                   '\nThe maximum marginal effect of borders conditional on distance on nightlights is ',
