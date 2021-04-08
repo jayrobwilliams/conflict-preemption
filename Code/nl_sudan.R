@@ -36,10 +36,7 @@ nl <- mask(nl, sudan)
 ## extract total nightlights by region
 sudan_nl <- extract(nl, sudan, fun = sum)
 
-## figure out appropriate variable to correlate w/ nightlights
-cor(log1p(sudan_nl), sudan$Pers_Sec, use = 'complete.obs')
-
-## save excluded share
+## save correlation b/w security personnel and nightlights
 fileConn <- file(here::here('Tables/nl_sudan.txt'))
 writeLines(paste0('The correlation between security force personnel and nightlights is ',
                   round(cor(log1p(sudan_nl), sudan$Pers_Sec, use = 'complete.obs'), 2)),
