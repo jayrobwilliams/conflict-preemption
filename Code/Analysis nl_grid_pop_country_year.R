@@ -35,6 +35,7 @@ grid_log <- grid %>%
 
 ## define model priors and hyperpriors
 mod_priors <- set_prior('normal(mu_beta, sigma_beta)', class = 'b') +
+  set_prior('normal(0, 5)', class = 'Intercept') +
   set_prior('target += normal_lpdf(mu_beta | 0, 5)', check = F) +
   set_prior('target += cauchy_lpdf(sigma_beta | 0, 2.5)', check = F) +
   set_prior('cauchy(0, 2.5)', class = 'sd', group = 'state_ind') +
